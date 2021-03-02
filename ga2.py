@@ -205,53 +205,57 @@ def evolve(pop, target, selection_type, crossover_type, elitism=False, retain=0.
        
     return parents
 
-# initialize all values
-target = [25, 18, 31, -14, 7, -19] # target list
-p_count = 100 # number of individuals in a population
-i_length = len(target) # length of an individual
-i_min = -100 # minimum possible value in an individual's list of values
-i_max = 100 # maximum possible value in an individual's list of values
-p_selection = 'rank' # selection method ('rank', 'roulette wheel')
-p_crossover = 'uniform' # crossover technique ('split', 'uniform')
-elitism = False # boolean to determine if elitism should be implemented
-r_percentage = 0.75 # retain percentage
-r_select = 0.05 # random select probability for genetic diversity
-m_probability = 0.1 # mutation probability
+def main():
 
-# create an initial population of individuals
-p = population(p_count, i_length, i_min, i_max)
+    target = [25, 18, 31, -14, 7, -19] # target list
+    p_count = 100 # number of individuals in a population
+    i_length = len(target) # length of an individual
+    i_min = -100 # minimum possible value in an individual's list of values
+    i_max = 100 # maximum possible value in an individual's list of values
+    p_selection = 'rank' # selection method ('rank', 'roulette wheel')
+    p_crossover = 'uniform' # crossover technique ('split', 'uniform')
+    elitism = False # boolean to determine if elitism should be implemented
+    r_percentage = 0.75 # retain percentage
+    r_select = 0.05 # random select probability for genetic diversity
+    m_probability = 0.1 # mutation probability
 
-# create an initial list to store population fitness values
-fitness_history = [grade(p,target)]
+    # create an initial population of individuals
+    p = population(p_count, i_length, i_min, i_max)
 
-# initialize number of generations to reach solution
-generations = 0
+    # create an initial list to store population fitness values
+    fitness_history = [grade(p,target)]
 
-# evolve the initial population until termination criteria is met
-while fitness_history[-1] >= 1 and fitness(p[0], target) != 0:
-    p = evolve(p, target, p_selection, p_crossover, elitism, retain=r_percentage, random_select=r_select, mutate=m_probability)
-    fitness_history.append(grade(p,target))
-    generations += 1
+    # initialize number of generations to reach solution
+    generations = 0
 
-print('Generations: {iter}'.format(iter=generations))
+    # evolve the initial population until termination criteria is met
+    while fitness_history[-1] >= 1 and fitness(p[0], target) != 0:
+        p = evolve(p, target, p_selection, p_crossover, elitism, retain=r_percentage, random_select=r_select, mutate=m_probability)
+        fitness_history.append(grade(p,target))
+        generations += 1
 
-plot_type = 1 # integer that determines which figure should be plotted
+    print('Generations: {iter}'.format(iter=generations))
 
-if plot_type == 1:
-    # plot fitness history to display when solution is reached
-    plt.plot(fitness_history, c='mediumseagreen')
-    plt.ylabel('Average fitness of population')
-    plt.xlabel('Number of generations')
-else:
-    # select best performing individual
-    points = p[0]
-    # select 20 x-values to use for polynomial approximation testing
-    values = np.linspace(-1,1,20)
-    # plot approximation of best performing individual to the polynomial
-    plt.plot(values, np.polyval(target,values), c='seagreen',marker='.', linewidth=2)
-    plt.plot(values, np.polyval(points,values), c='darkorange', marker='.', linewidth=2)
-    plt.xticks([])
-    plt.yticks([])
-    plt.legend(['Target', 'Approximation'], loc='lower right')
+    plot_type = 1 # integer that determines which figure should be plotted
 
-plt.show()
+    if plot_type == 1:
+        # plot fitness history to display when solution is reached
+        plt.plot(fitness_history, c='mediumseagreen')
+        plt.ylabel('Average fitness of population')
+        plt.xlabel('Number of generations')
+    else:
+        # select best performing individual
+        points = p[0]
+        # select 20 x-values to use for polynomial approximation testing
+        values = np.linspace(-1,1,20)
+        # plot approximation of best performing individual to the polynomial
+        plt.plot(values, np.polyval(target,values), c='seagreen',marker='.', linewidth=2)
+        plt.plot(values, np.polyval(points,values), c='darkorange', marker='.', linewidth=2)
+        plt.xticks([])
+        plt.yticks([])
+        plt.legend(['Target', 'Approximation'], loc='lower right')
+
+    plt.show()
+
+if __name__ == '__main__':
+	main()
