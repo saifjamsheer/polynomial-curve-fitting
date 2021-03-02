@@ -1,4 +1,4 @@
-# Numerical Optimization of Polynomial Function
+# Numerical Optimization of Polynomial Functions
 ### Polynomial Curve Fitting using Genetic Algorithms
 
 Designing a genetic algorithm to approximate to a polynomial function specified by the user. This was part of the coursework for ME40212 Biomimetics at the University of Bath, which involved a literature review of evolutionary algorithms for optimization problems.  
